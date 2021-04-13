@@ -1,0 +1,16 @@
+version: 2.1
+
+jobs:
+  run_inspec:
+    docker: [image: chef/inspec:4.29.1]
+    steps:
+      - checkout
+      - run:
+          name: Execute inspec tests
+          command: |
+            inspec exec --chef-license accept-silent . -t aws://
+
+workflows:
+  compliance_tests:
+    jobs:
+      - run_inspec

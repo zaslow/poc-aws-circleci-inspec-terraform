@@ -1,0 +1,11 @@
+name: poc-aws-circleci-inspec-terraform
+title: POC AWS CircleCI Inspec Terraform
+maintainer: Dean Zaslow
+summary: A Proof-of-Concept InSpec Profile using CircleCI & Terraform on AWS
+version: 0.0.1
+inspec_version: '~> 4'
+depends:
+  - name: inspec-aws
+    url: https://github.com/inspec/inspec-aws/archive/master.tar.gz
+supports:
+  - platform: aws

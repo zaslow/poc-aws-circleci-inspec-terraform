@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  inspec:
+    image: chef/inspec:4.29.1
+    container_name: inspec_aws_poc_tests
+    working_dir: /usr/local/src
+    command: exec --chef-license accept-silent . -t aws://
+    environment:
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-us-east-2}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      AWS_SECURITY_TOKEN: ${AWS_SECURITY_TOKEN}
+    volumes: [.:/usr/local/src]
