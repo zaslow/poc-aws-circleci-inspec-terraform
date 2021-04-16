@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  inspec:
+    build: .
+    image: zaslow/circleci-dind:0.0.1
+    command: >-
+      local execute \
+        -e AWS_REGION=$AWS_REGION \
+        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+        -e ASSUME_ROLE_ARN=$ASSUME_ROLE_ARN
+        --job run_inspec

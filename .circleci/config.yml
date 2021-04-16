@@ -1,18 +1,22 @@
 version: 2.1
 
 jobs:
+  aws_provision:
+    docker: [image: hashicorp/terraform:0.15.0]
+    steps:
+      - checkout
+      - run: |
+          terraform -chdir=./tf init
+          terraform -chdir=./tf plan
+
   run_inspec:
     docker: [image: zaslowd/poc-aws-circleci-inspec-terraform:0.0.1]
     steps:
       - checkout
-      - run: |
-          export TEMP_ROLE=`aws sts assume-role --role-arn $ASSUME_ROLE_ARN --role-session-name cicd`
-          export AWS_ACCESS_KEY_ID=$(echo "${TEMP_ROLE}" | jq -r '.Credentials.AccessKeyId')
-          export AWS_SECRET_ACCESS_KEY=$(echo "${TEMP_ROLE}" | jq -r '.Credentials.SecretAccessKey')
-          export AWS_SESSION_TOKEN=$(echo "${TEMP_ROLE}" | jq -r '.Credentials.SessionToken')
-          inspec exec --chef-license accept-silent . -t aws://
+      - run: ./docker-entrypoint.sh
 
 workflows:
-  compliance_tests:
+  build-test-compliance:
     jobs:
+      - aws_provision
       - run_inspec
