@@ -3,7 +3,7 @@ version: '3.8'
 services:
   aws-terraform-inspec:
     build: .
-    image: zaslow/poc-aws-circleci-inspec-terraform:0.0.1
+    image: zaslowd/poc-aws-circleci-inspec-terraform:0.0.1
     container_name: aws_terraform_inspec
     environment:
       AWS_REGION: ${AWS_REGION}

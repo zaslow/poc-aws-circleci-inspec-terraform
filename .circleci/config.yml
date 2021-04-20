@@ -1,14 +1,6 @@
 version: 2.1
 
 jobs:
-  aws_provision:
-    docker: [image: hashicorp/terraform:0.15.0]
-    steps:
-      - checkout
-      - run: |
-          terraform -chdir=./tf init
-          terraform -chdir=./tf plan
-
   run_inspec:
     docker: [image: zaslowd/poc-aws-circleci-inspec-terraform:0.0.1]
     steps:
@@ -18,5 +10,4 @@ jobs:
 workflows:
   build-test-compliance:
     jobs:
-      - aws_provision
       - run_inspec

@@ -4,5 +4,5 @@ depends:
 - name: inspec-aws
   resolved_source:
     url: https://github.com/inspec/inspec-aws/archive/master.tar.gz
-    sha256: ade860c95e8df3a72448bb4999e64268d0125262b754ee318ae46563b5197a16
+    sha256: 19250d9bc3eb41e59742b260936f5f437f2602f84e5d4144498d1841d9f0c486
   version_constraints: []

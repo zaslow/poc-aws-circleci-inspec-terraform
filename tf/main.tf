@@ -19,12 +19,11 @@ variable "region" {
 
 variable "role_name" {
   type    = string
-  default = "lambda_assume_role_controller"
+  default = "ComplianceTestsController"
 }
 
-variable "service" {
+variable "user_arn" {
   type    = string
-  default = "lambda.amazonaws.com"
 }
 
 provider "aws" {
@@ -32,30 +31,42 @@ provider "aws" {
   region  = var.region
 }
 
-resource "aws_iam_role" "sts_assume_role_controller" {
+resource "aws_iam_role" "compliance_tests_controller" {
   name = var.role_name
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          # AWS     = "arn:aws:iam::264010607452:user/cicd"
-          Service = var.service
-        }
-        Sid = ""
-      },
-    ]
+    Version   = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = {
+        AWS     = var.user_arn
+      }
+      Sid       = ""
+    }]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ec2-readonly-role-policy-attach" {
-  role       = aws_iam_role.sts_assume_role_controller.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+resource "aws_iam_policy" "compliance_tests_policy" {
+  policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = [{
+      Action   = ["ec2:DescribeRegions"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+  })  
+}
+
+resource "aws_iam_role_policy_attachment" "compliance_tests_controller_policy" {
+  role       = aws_iam_role.compliance_tests_controller.name
+  policy_arn = aws_iam_policy.compliance_tests_policy.arn
 }
 
 output "assume_role_arn" {
-  value = aws_iam_role.sts_assume_role_controller.arn
+  value = aws_iam_role.compliance_tests_controller.arn
+}
+
+output "assume_role_name" {
+  value = aws_iam_role.compliance_tests_controller.name
 }
