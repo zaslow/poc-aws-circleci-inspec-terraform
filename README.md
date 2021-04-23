@@ -1,8 +1,10 @@
-# CircleCI, Inspec, & Terraform POC on AWS
+# CircleCI, InSpec, & Terraform POC on AWS
 **Provision permissions with Terraform on AWS & run Chef Inspec compliance tests via CircleCI**
 
+Given an AWS IAM user, this project will use Terraform to provision a new IAM role with policy-based permissions and then run Chef InSpec compliance tests against the given AWS instance. This is orchestrated both locally with Docker Compose, and remotely with CircleCI.
+
 ## Pre-requisites
-Create an AWS IAM user with the following basic permissions set to `Allow`
+Create an AWS IAM user with the following basic permissions (basically all policy & role permissions, plus `sts:AssumeRole`) set to `Allow`
 ```
 iam:GetRole
 iam:GetRolePolicy
@@ -42,6 +44,9 @@ AWS_SECRET_ACCESS_KEY
 ```
 docker-compose up
 ```
+The terraform potion must be run locally - this simplifies TF state management. In a team context, the `terraform.tfstate` file would be stored in a shared location such as AWS S3.
+
+You can customize the name of the AWS profile or role you are using by changing the values in `tf/main.tfvars.json`.
 --
 ## CircleCI
 

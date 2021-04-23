@@ -1,0 +1,8 @@
+FROM stedolan/jq as jq
+FROM amazon/aws-cli:2.1.38
+
+LABEL maintainer=zaslow \
+      version=0.0.1
+
+# Get jq executable
+COPY --from=jq /usr/local/bin/jq /usr/local/bin/jq

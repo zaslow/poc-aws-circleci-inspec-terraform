@@ -1,12 +1,23 @@
 version: '3.8'
 
 services:
-  aws-terraform-inspec:
-    build: .
-    image: zaslowd/poc-aws-circleci-inspec-terraform:0.0.1
-    container_name: aws_terraform_inspec
-    environment:
+  aws-terraform:
+    build:
+      context: .
+      dockerfile: Dockerfile.tf
+    image: aws-terraform
+    container_name: aws_terraform
+    environment: &aws-env-vars
       AWS_REGION: ${AWS_REGION}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ./tf:/usr/local/src
+      - ./docker-entrypoint.tf.sh:/usr/local/src/docker-entrypoint.sh
+
+  aws-inspec:
+    build: .
+    image: aws-inspec
+    container_name: aws_inspec
+    environment: *aws-env-vars
     volumes: [.:/usr/local/src]
