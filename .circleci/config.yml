@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   run_inspec:
-    docker: [image: zaslowd/poc-aws-circleci-inspec-terraform:0.0.1]
+    docker: [image: zaslowd/aws-inspec:0.0.1]
     steps:
       - checkout
       - run: ./docker-entrypoint.sh
