@@ -2,7 +2,7 @@ FROM stedolan/jq as jq
 FROM chef/inspec:4.35.1
 
 LABEL maintainer=zaslow \
-      version=0.0.1
+      version=0.0.2
 
 # Install AWS CLI
 RUN apt-get update && \
