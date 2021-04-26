@@ -2,12 +2,12 @@ version: 2.1
 
 jobs:
   run_inspec:
-    docker: [image: zaslowd/aws-inspec:0.0.1]
+    docker: [image: zaslowd/aws-inspec:0.0.2]
     steps:
       - checkout
       - run: ./docker-entrypoint.sh
 
 workflows:
-  build-test-compliance:
+  compliance-tests:
     jobs:
       - run_inspec
